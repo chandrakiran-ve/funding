@@ -33,6 +33,16 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Security - Never commit credentials
+**/test_*_credentials.py
+**/test_*_keys.py
+**/*_with_credentials.py
+**/*_with_keys.py
+**/credentials.json
+**/service-account*.json
+**/*.pem
+**/*.key
+
 # vercel
 .vercel
 
