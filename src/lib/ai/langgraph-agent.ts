@@ -1,4 +1,4 @@
-import { AgentState, ChatMessage } from './types';
+import { ChatMessage } from './types';
 import { queryParser } from './query-parser';
 import { dataService } from './data-service';
 import { geminiService } from './gemini-service';
