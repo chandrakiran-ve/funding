@@ -5,7 +5,7 @@ const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || 'http://localhost:8
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { fiscalYear: string } }
+  { params }: { params: Promise<{ fiscalYear: string }> }
 ) {
   try {
     // Check authentication
@@ -13,7 +13,7 @@ export async function GET(
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { fiscalYear } = params;
+    const { fiscalYear } = await params;
     
     const response = await fetch(`${PYTHON_SERVICE_URL}/api/v1/targets/fiscal-year/${fiscalYear}`, {
       method: 'GET',
