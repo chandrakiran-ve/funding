@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { auth } from '@clerk/nextjs/server';
 import { getStates } from "@/lib/sheets";
 
 // GET /api/test-states - Test states fetching
 export async function GET() {
   try {
+    // Check authentication
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     console.log("🧪 Testing states fetch...");
     const states = await getStates();
     console.log("📊 States result:", states);

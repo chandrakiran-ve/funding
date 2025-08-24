@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     REDIS_URL: Optional[str] = "redis://localhost:6379"
     
     # Security
-    SECRET_KEY: str = "your-secret-key-change-in-production"
+    SECRET_KEY: Optional[str] = None  # Must be set in environment variables
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
     # Logging

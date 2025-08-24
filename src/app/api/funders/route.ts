@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { getFunders } from '@/lib/sheets';
 import { addFunder, updateFunder } from '@/lib/funder-crud';
 
 export async function GET() {
   try {
+    // Check authentication
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const funders = await getFunders();
     return NextResponse.json(funders);
   } catch (error) {
@@ -14,6 +20,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const body = await request.json();
     const { name, type, priority, owner, contactPerson, contactEmail, contactPhone, description } = body;
 
@@ -42,6 +53,11 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    // Check authentication
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const body = await request.json();
     const { id, ...updates } = body;
 

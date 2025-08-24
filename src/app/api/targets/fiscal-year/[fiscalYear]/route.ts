@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 
 const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || 'http://localhost:8000';
 
@@ -7,6 +8,11 @@ export async function GET(
   { params }: { params: { fiscalYear: string } }
 ) {
   try {
+    // Check authentication
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { fiscalYear } = params;
     
     const response = await fetch(`${PYTHON_SERVICE_URL}/api/v1/targets/fiscal-year/${fiscalYear}`, {
