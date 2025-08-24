@@ -47,7 +47,6 @@ export default function RootLayout({
             <Toaster 
               position="top-right"
               toastOptions={{
-                className: 'premium-card border-l-4 border-l-primary shadow-premium-lg',
                 duration: 4000,
               }}
             />

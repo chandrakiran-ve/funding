@@ -163,10 +163,10 @@ export function FundersClient({
             <div className="text-4xl font-bold text-blue-600 mb-3 bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
               {funderMetrics.length}
             </div>
-            <p className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
+            <div className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
               {activeFunders} active this FY
-            </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -181,10 +181,10 @@ export function FundersClient({
             <div className="text-4xl font-bold text-green-600 mb-3 bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
               {formatMoney(totalCurrentFunding)}
             </div>
-            <p className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
+            <div className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary"></div>
               {currentFY}
-            </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -199,10 +199,10 @@ export function FundersClient({
             <div className="text-4xl font-bold text-purple-600 mb-3 bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">
               {formatMoney(totalHistoricalFunding)}
             </div>
-            <p className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
+            <div className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-purple-500"></div>
               All-time contributions
-            </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -217,10 +217,10 @@ export function FundersClient({
             <div className="text-4xl font-bold text-orange-600 mb-3 bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
               {formatMoney(activeFunders > 0 ? totalCurrentFunding / activeFunders : 0)}
             </div>
-            <p className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
+            <div className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-orange-500"></div>
               This fiscal year
-            </p>
+            </div>
           </CardContent>
         </Card>
       </div>
