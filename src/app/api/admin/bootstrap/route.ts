@@ -24,7 +24,6 @@ export async function POST() {
 
     // Create admin user
     const adminUser: Omit<User, 'id'> = {
-      id: 'bootstrap_admin',
       email: adminEmail,
       firstName: 'Chandrakiran',
       lastName: 'HJ',
@@ -37,7 +36,7 @@ export async function POST() {
     };
 
     const sheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID || "";
-    await addUser(sheetId, adminUser);
+    await addUser(sheetId, adminUser, 'bootstrap_admin');
 
     return NextResponse.json({ 
       message: "Admin user bootstrapped successfully",

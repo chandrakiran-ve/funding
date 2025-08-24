@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { aiAgent, ChatMessage } from '@/lib/ai-agent';
+import { aiAgent, ChatMessage } from '@/lib/ai/ai-agent';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30; // 30 seconds timeout for AI responses
@@ -25,19 +25,22 @@ export async function POST(request: NextRequest) {
     // Process the message through the AI agent
     const response = await aiAgent.processQuery(message, chatHistory);
 
+    // Get data summary
+    const dataSummary = await aiAgent.getDataSummary();
+
     // Create response message
     const responseMessage: ChatMessage = {
       id: `ai-${Date.now()}`,
       role: 'assistant',
       content: response,
       timestamp: new Date(),
-      context: aiAgent.getDataSummary()
+      context: dataSummary
     };
 
     return NextResponse.json({
       success: true,
       message: responseMessage,
-      context: aiAgent.getDataSummary()
+      context: dataSummary
     });
 
   } catch (error) {
@@ -59,7 +62,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Return AI agent status and data summary
-    const summary = aiAgent.getDataSummary();
+    const summary = await aiAgent.getDataSummary();
     
     return NextResponse.json({
       success: true,
@@ -98,10 +101,12 @@ export async function PUT(request: NextRequest) {
     console.log('Refreshing AI agent data...');
     await aiAgent.refreshContext();
     
+    const summary = await aiAgent.getDataSummary();
+    
     return NextResponse.json({
       success: true,
       message: 'AI agent data refreshed successfully',
-      summary: aiAgent.getDataSummary()
+      summary
     });
 
   } catch (error) {

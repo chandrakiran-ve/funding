@@ -33,7 +33,7 @@ export default async function Page() {
       stateCount,
       contributionCount,
       fiscalYears,
-      status: totalAmount > 0 ? 'active' : 'inactive'
+      status: (totalAmount > 0 ? 'active' : 'inactive') as 'active' | 'inactive'
     };
   }).sort((a, b) => b.currentAmount - a.currentAmount);
 

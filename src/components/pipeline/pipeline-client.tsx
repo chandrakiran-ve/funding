@@ -436,7 +436,7 @@ export function PipelineClient({ initialProspects, states }: PipelineClientProps
 
                               {prospect.contactPerson && (
                                 <div className="text-xs text-muted-foreground flex items-center gap-1">
-                                  <User className="h-3 w-3" />
+                                  <Users className="h-3 w-3" />
                                   {prospect.contactPerson}
                                 </div>
                               )}
@@ -738,7 +738,7 @@ export function PipelineClient({ initialProspects, states }: PipelineClientProps
                         {prospect.contactPerson && (
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
-                              <User className="h-3 w-3" />
+                              <Users className="h-3 w-3" />
                               {prospect.contactPerson}
                             </div>
                             {prospect.contactEmail && (

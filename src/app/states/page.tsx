@@ -61,7 +61,7 @@ export default async function Page() {
       fundedSchools: fundedSchools.length,
       unfundedSchools: stateSchools.length - fundedSchools.length,
       contributions: stateContribs.length,
-      status: achievement >= 80 ? 'on-track' : achievement >= 50 ? 'at-risk' : 'critical'
+      status: (achievement >= 80 ? 'on-track' : achievement >= 50 ? 'at-risk' : 'critical') as 'on-track' | 'at-risk' | 'critical'
     };
   }).sort((a, b) => b.achievement - a.achievement);
 

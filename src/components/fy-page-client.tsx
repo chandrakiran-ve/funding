@@ -245,7 +245,7 @@ export function FYPageClient({ stateTargets: initialStateTargets, contributions:
         </div>
         <div className="flex gap-2 items-center">
           <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-          <Select value={selectedFY} onValueChange={setSelectedFY}>
+          <Select value={selectedFY} onValueChange={(value) => setSelectedFY(value as `FY${number}-${number}`)}>
             <SelectTrigger className="w-40">
               <SelectValue />
             </SelectTrigger>

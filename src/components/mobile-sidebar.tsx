@@ -151,8 +151,8 @@ export function MobileSidebar({ className }: MobileSidebarProps) {
           
           <div className="p-4 border-t mt-auto">
             <div className="text-xs text-muted-foreground">
-              {user?.name && (
-                <div className="mb-1">Logged in as {user.name}</div>
+              {(user?.firstName || user?.lastName) && (
+                <div className="mb-1">Logged in as {user.firstName} {user.lastName}</div>
               )}
               <div>Role: {isAdmin ? 'Admin' : isRegionalManager ? 'Regional Manager' : 'User'}</div>
             </div>

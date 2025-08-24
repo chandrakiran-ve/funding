@@ -149,7 +149,7 @@ export function StatePageClient({
           {/* Fiscal Year Selector */}
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />
-            <Select value={selectedFY} onValueChange={setSelectedFY}>
+            <Select value={selectedFY} onValueChange={(value) => setSelectedFY(value as `FY${number}-${number}`)}>
               <SelectTrigger className="w-32">
                 <SelectValue />
               </SelectTrigger>

@@ -17,7 +17,7 @@ export async function GET() {
   } catch (error) {
     console.error("❌ Test states error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch states", details: error.message }, 
+      { error: "Failed to fetch states", details: error instanceof Error ? error.message : 'Unknown error' }, 
       { status: 500 }
     );
   }
