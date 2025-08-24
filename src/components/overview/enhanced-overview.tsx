@@ -17,10 +17,12 @@ import {
   Clock,
   Download,
   Filter,
-  BarChart3
+  BarChart3,
+  Home
 } from "lucide-react";
 import Link from "next/link";
 import { formatMoney } from "@/lib/money";
+import { cn } from "@/lib/utils";
 import { ResponsiveContainer, ResponsiveGrid, ResponsiveMetrics, useIsMobile } from "@/components/ui/mobile-responsive";
 import { AdvancedFilters, FilterConfig, ActiveFilter } from "@/components/ui/advanced-filters";
 import { ExportManager, ExportColumn, ExportOptions } from "@/components/ui/export-manager";
@@ -230,33 +232,56 @@ export function EnhancedOverview({ data }: EnhancedOverviewProps) {
   ];
 
   return (
-    <ResponsiveContainer className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Fundraising Overview</h1>
-          <p className="text-muted-foreground">
-            Vision Empower Trust • Fiscal Year {currentFY}
-          </p>
-        </div>
-        <div className="flex gap-2 w-full sm:w-auto">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => setIsExportOpen(true)}
-            className="flex-1 sm:flex-none"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-          <Button 
-            size="sm" 
-            onClick={() => setActiveTab("analytics")}
-            className="flex-1 sm:flex-none"
-          >
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Analytics
-          </Button>
+    <ResponsiveContainer className="space-y-8 p-6">
+      {/* Premium Header */}
+      <div className="premium-card-hover p-10 bg-gradient-to-br from-primary/8 via-background to-accent/5 animate-fade-in">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+                Fundraising Intelligence
+              </h1>
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-6 bg-gradient-to-b from-primary to-accent rounded-full"></div>
+                <p className="text-xl text-muted-foreground font-semibold">
+                  Vision Empower Trust • Fiscal Year {currentFY}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-6 text-sm">
+              <span className="flex items-center gap-2 status-success">
+                <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="font-semibold">{onTrackStates} On Track</span>
+              </span>
+              <span className="flex items-center gap-2 status-warning">
+                <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+                <span className="font-semibold">{atRiskStates} At Risk</span>
+              </span>
+              <span className="flex items-center gap-2 status-danger">
+                <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                <span className="font-semibold">{criticalStates} Critical</span>
+              </span>
+            </div>
+          </div>
+          <div className="flex gap-4 w-full sm:w-auto">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => setIsExportOpen(true)}
+              className="btn-premium-secondary flex-1 sm:flex-none hover-lift"
+            >
+              <Download className="h-5 w-5 mr-2" />
+              Export Data
+            </Button>
+            <Button 
+              size="lg" 
+              onClick={() => setActiveTab("analytics")}
+              className="btn-premium flex-1 sm:flex-none hover-glow"
+            >
+              <BarChart3 className="h-5 w-5 mr-2" />
+              Analytics
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -274,82 +299,126 @@ export function EnhancedOverview({ data }: EnhancedOverviewProps) {
         resultCount={statePerformance.length}
       />
 
-      {/* Main Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className={
-          isMobile ? "grid w-full grid-cols-2" : "grid w-full grid-cols-4"
-        }>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="states">States</TabsTrigger>
-          <TabsTrigger value="funders">Funders</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+      {/* Premium Content Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className={cn(
+          "premium-card-hover p-3 h-auto bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-md",
+          isMobile ? "grid w-full grid-cols-2 gap-3" : "grid w-full grid-cols-4 gap-3"
+        )}>
+          <TabsTrigger 
+            value="overview" 
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg h-14 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+          >
+            <div className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              Overview
+            </div>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="states" 
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg h-14 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+          >
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              States
+            </div>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="funders" 
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg h-14 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+          >
+            <div className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Funders
+            </div>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="analytics" 
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg h-14 font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+          >
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Analytics
+            </div>
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">
+        <TabsContent value="overview" className="space-y-6">
           <ResponsiveGrid cols={{ default: 1, md: 2, lg: 3 }}>
-            {/* State Performance Summary */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>State Performance Summary</CardTitle>
-                <CardDescription>
+            {/* Premium State Performance Summary */}
+            <Card className="lg:col-span-2 premium-card-hover">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-bold flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10">
+                    <MapPin className="h-5 w-5 text-primary" />
+                  </div>
+                  State Performance Summary
+                </CardTitle>
+                <CardDescription className="text-base">
                   Achievement rates across {states.length} operational states
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">{onTrackStates}</div>
-                    <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
-                      <CheckCircle className="h-3 w-3" />
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="metric-card-premium text-center">
+                    <div className="text-3xl font-bold text-green-600 mb-2">{onTrackStates}</div>
+                    <div className="text-sm font-medium flex items-center justify-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
                       On Track
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">{atRiskStates}</div>
-                    <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
-                      <Clock className="h-3 w-3" />
+                  <div className="metric-card-premium text-center">
+                    <div className="text-3xl font-bold text-yellow-600 mb-2">{atRiskStates}</div>
+                    <div className="text-sm font-medium flex items-center justify-center gap-2">
+                      <Clock className="h-4 w-4 text-yellow-500" />
                       At Risk
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">{criticalStates}</div>
-                    <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
+                  <div className="metric-card-premium text-center">
+                    <div className="text-3xl font-bold text-red-600 mb-2">{criticalStates}</div>
+                    <div className="text-sm font-medium flex items-center justify-center gap-2">
+                      <AlertCircle className="h-4 w-4 text-red-500" />
                       Critical
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {statePerformance.slice(0, 5).map((state) => (
-                    <div key={state.code} className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50">
-                      <div className="flex items-center gap-3">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">{state.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {state.coordinator}
+                    <div key={state.code} className="premium-card-hover p-4 transition-all duration-300">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="p-2 rounded-lg bg-gradient-to-br from-muted/50 to-muted/30">
+                            <MapPin className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-lg">{state.name}</div>
+                            <div className="text-sm text-muted-foreground font-medium">
+                              {state.coordinator}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="text-right">
-                          <div className="text-sm font-medium">
-                            {state.achievement.toFixed(1)}%
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <div className="text-lg font-bold">
+                              {state.achievement.toFixed(1)}%
+                            </div>
+                            <div className="text-sm text-muted-foreground font-medium">
+                              {formatMoney(state.secured)}
+                            </div>
                           </div>
-                          <div className="text-xs text-muted-foreground">
-                            {formatMoney(state.secured)}
-                          </div>
+                          <Badge 
+                            className={cn(
+                              "font-medium px-3 py-1",
+                              state.status === 'on-track' && "status-success",
+                              state.status === 'at-risk' && "status-warning", 
+                              state.status === 'critical' && "status-danger"
+                            )}
+                          >
+                            {state.status === 'on-track' ? 'On Track' :
+                             state.status === 'at-risk' ? 'At Risk' : 'Critical'}
+                          </Badge>
                         </div>
-                        <Badge 
-                          variant={
-                            state.status === 'on-track' ? 'default' :
-                            state.status === 'at-risk' ? 'secondary' : 'destructive'
-                          }
-                        >
-                          {state.status === 'on-track' ? 'On Track' :
-                           state.status === 'at-risk' ? 'At Risk' : 'Critical'}
-                        </Badge>
                       </div>
                     </div>
                   ))}
@@ -357,50 +426,60 @@ export function EnhancedOverview({ data }: EnhancedOverviewProps) {
               </CardContent>
             </Card>
 
-            {/* Quick Stats */}
-            <div className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Pipeline Health</CardTitle>
+            {/* Premium Quick Stats */}
+            <div className="space-y-6">
+              <Card className="premium-card-hover">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl font-bold flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/10">
+                      <TrendingUp className="h-5 w-5 text-blue-600" />
+                    </div>
+                    Pipeline Health
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="text-2xl font-bold text-blue-600">
+                <CardContent className="space-y-6">
+                  <div className="metric-card-premium">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
                       {formatMoney(pipelineValue)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Total Pipeline</div>
+                    <div className="text-sm font-medium text-muted-foreground">Total Pipeline</div>
                   </div>
-                  <div>
-                    <div className="text-lg font-semibold">
+                  <div className="metric-card-premium">
+                    <div className="text-2xl font-bold text-blue-500 mb-2">
                       {formatMoney(weightedPipeline)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Weighted Value</div>
+                    <div className="text-sm font-medium text-muted-foreground">Weighted Value</div>
                   </div>
-                  <div>
-                    <div className="text-lg font-semibold">{prospects.length}</div>
-                    <div className="text-sm text-muted-foreground">Active Prospects</div>
+                  <div className="metric-card-premium">
+                    <div className="text-2xl font-bold text-primary mb-2">{prospects.length}</div>
+                    <div className="text-sm font-medium text-muted-foreground">Active Prospects</div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Funder Activity</CardTitle>
+              <Card className="premium-card-hover">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl font-bold flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/10">
+                      <Users className="h-5 w-5 text-green-600" />
+                    </div>
+                    Funder Activity
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div>
-                    <div className="text-2xl font-bold">{funders.length}</div>
-                    <div className="text-sm text-muted-foreground mb-4">Active Funders</div>
+                <CardContent className="space-y-4">
+                  <div className="metric-card-premium">
+                    <div className="text-3xl font-bold text-green-600 mb-2">{funders.length}</div>
+                    <div className="text-sm font-medium text-muted-foreground">Active Funders</div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {funders.slice(0, 3).map((funder) => {
                       const funderContribs = currentContributions.filter(c => c.funderId === funder.id);
                       const totalAmount = funderContribs.reduce((sum, c) => sum + c.amount, 0);
                       
                       return (
-                        <div key={funder.id} className="flex justify-between items-center">
-                          <div className="text-sm font-medium truncate">{funder.name}</div>
-                          <div className="text-sm text-muted-foreground">
+                        <div key={funder.id} className="premium-card p-3 flex justify-between items-center">
+                          <div className="text-sm font-semibold truncate">{funder.name}</div>
+                          <div className="text-sm font-bold text-primary">
                             {formatMoney(totalAmount)}
                           </div>
                         </div>
