@@ -3,27 +3,27 @@ import { Bot, Brain, Sparkles, TrendingUp, BarChart3, Zap } from "lucide-react";
 
 export default function AIAssistantPage() {
   return (
-    <div className="h-[calc(100vh-8rem)] flex flex-col p-6 animate-fade-in">
-      <div className="premium-card-hover p-10 mb-8 bg-gradient-to-br from-primary/8 via-background to-accent/5">
-        <div className="flex items-center gap-6 mb-8">
-          <div className="relative">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-primary via-primary to-accent shadow-xl hover-glow">
-              <Bot className="h-10 w-10 text-primary-foreground" />
+    <div className="h-[calc(100vh-8rem)] flex flex-col p-3 sm:p-6 animate-fade-in">
+      <div className="premium-card-hover p-4 sm:p-6 lg:p-10 mb-4 sm:mb-8 bg-gradient-to-br from-primary/8 via-background to-accent/5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="relative flex-shrink-0">
+            <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-br from-primary via-primary to-accent shadow-xl hover-glow">
+              <Bot className="h-8 w-8 sm:h-10 sm:w-10 text-primary-foreground" />
             </div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse shadow-lg"></div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse shadow-lg"></div>
           </div>
-          <div className="space-y-3">
-            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+          <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
               AI Assistant
             </h1>
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-6 bg-gradient-to-b from-primary to-accent rounded-full"></div>
-              <p className="text-xl text-muted-foreground font-semibold">
+            <div className="flex items-start gap-2">
+              <div className="w-1 h-4 sm:h-6 bg-gradient-to-b from-primary to-accent rounded-full flex-shrink-0 mt-1"></div>
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-semibold leading-relaxed">
                 Get intelligent insights and analysis from your fundraising data using advanced AI
               </p>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-primary animate-pulse flex-shrink-0" />
               <span className="status-info">Powered by Advanced Machine Learning</span>
             </div>
           </div>

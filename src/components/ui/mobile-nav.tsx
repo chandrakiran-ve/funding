@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Menu, X } from "lucide-react";
 
 interface MobileNavProps {
@@ -26,6 +26,7 @@ export function MobileNav({ children, className }: MobileNavProps) {
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="w-80 p-0 h-full max-h-screen overflow-y-auto">
+          <DialogTitle className="sr-only">Navigation Menu</DialogTitle>
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="font-semibold">Navigation</h2>
             <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>

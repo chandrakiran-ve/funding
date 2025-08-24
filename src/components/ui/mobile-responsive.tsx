@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/ui/mobile-nav";
 import { Menu, X } from "lucide-react";
 
-// Hook to detect screen size
+// Hook to detect screen size with more granular breakpoints
 export function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -21,6 +21,49 @@ export function useIsMobile() {
   }, []);
 
   return isMobile;
+}
+
+// Hook for more detailed screen size detection
+export function useScreenSize() {
+  const [screenSize, setScreenSize] = useState({
+    width: 0,
+    height: 0,
+    isMobile: false,
+    isTablet: false,
+    isDesktop: false
+  });
+
+  useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      setScreenSize({
+        width,
+        height,
+        isMobile: width < 768,
+        isTablet: width >= 768 && width < 1024,
+        isDesktop: width >= 1024
+      });
+    };
+
+    updateScreenSize();
+    window.addEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
+
+  return screenSize;
+}
+
+// Hook for touch device detection
+export function useIsTouchDevice() {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  return isTouchDevice;
 }
 
 // Mobile-responsive container
@@ -88,20 +131,103 @@ export function MobileSidebar({ children, className }: MobileSidebarProps) {
   return <MobileNav className={className}>{children}</MobileNav>;
 }
 
-// Mobile-responsive table
+// Mobile-responsive table with enhanced mobile view
 interface ResponsiveTableProps {
   children: React.ReactNode;
   className?: string;
+  mobileCardView?: boolean;
 }
 
-export function ResponsiveTable({ children, className }: ResponsiveTableProps) {
+export function ResponsiveTable({ children, className, mobileCardView = false }: ResponsiveTableProps) {
+  const isMobile = useIsMobile();
+
+  if (isMobile && mobileCardView) {
+    return (
+      <div className={cn("space-y-3", className)}>
+        {children}
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("overflow-x-auto -mx-4 sm:mx-0", className)}>
+    <div className={cn("overflow-x-auto -mx-2 sm:mx-0", className)}>
       <div className="inline-block min-w-full align-middle">
-        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <div className="overflow-hidden shadow-sm ring-1 ring-slate-200 sm:rounded-lg">
           {children}
         </div>
       </div>
+    </div>
+  );
+}
+
+// Mobile-optimized data table
+interface MobileDataTableProps {
+  data: Array<Record<string, any>>;
+  columns: Array<{
+    key: string;
+    label: string;
+    render?: (value: any, row: any) => React.ReactNode;
+  }>;
+  onRowClick?: (row: any) => void;
+}
+
+export function MobileDataTable({ data, columns, onRowClick }: MobileDataTableProps) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="space-y-3">
+        {data.map((row, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-lg border p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => onRowClick?.(row)}
+          >
+            {columns.map((column) => (
+              <div key={column.key} className="flex justify-between items-center py-1">
+                <span className="text-sm font-medium text-slate-600">{column.label}:</span>
+                <span className="text-sm text-slate-900 text-right">
+                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                </span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-slate-200">
+        <thead className="bg-slate-50">
+          <tr>
+            {columns.map((column) => (
+              <th
+                key={column.key}
+                className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+              >
+                {column.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-slate-200">
+          {data.map((row, index) => (
+            <tr
+              key={index}
+              className="hover:bg-slate-50 cursor-pointer"
+              onClick={() => onRowClick?.(row)}
+            >
+              {columns.map((column) => (
+                <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

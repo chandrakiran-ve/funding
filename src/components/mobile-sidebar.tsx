@@ -4,10 +4,10 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useUserContext } from "@/lib/user-context";
 import { cn } from "@/lib/utils";
-import { Menu, X, Home, Building2, MapPin, TrendingUp, Calendar, BarChart3, UserCog, Bot } from "lucide-react";
+import { Menu, X, Home, Building2, MapPin, Target, TrendingUp, Calendar, BarChart3, UserCog, Bot } from "lucide-react";
 import { useTransition, useCallback, memo, useMemo, useEffect } from "react";
 
 const getNavigation = (isAdmin: boolean, isRegionalManager: boolean, assignedStates: string[], statesData: any[]) => {
@@ -15,6 +15,7 @@ const getNavigation = (isAdmin: boolean, isRegionalManager: boolean, assignedSta
     { name: "Overview", href: "/", icon: Home },
     { name: "Funders", href: "/funders", icon: Building2 },
     { name: "States", href: "/states", icon: MapPin },
+    { name: "Targets", href: "/targets", icon: Target },
     { name: "Pipeline", href: "/pipeline", icon: TrendingUp },
     { name: "Fiscal Years", href: "/fy", icon: Calendar },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -61,21 +62,27 @@ const MobileNavItem = memo(({ item, pathname, onClick }: {
     });
   }, [item.href, router, onClick]);
 
+  const isActive = pathname === item.href;
+
   return (
     <Button
-      variant={pathname === item.href ? "secondary" : "ghost"}
+      variant={isActive ? "secondary" : "ghost"}
       className={cn(
-        "w-full justify-start gap-2 text-left",
-        pathname === item.href && "bg-secondary",
+        "w-full justify-start gap-3 text-left py-3 px-3 h-auto",
+        isActive && "bg-blue-50 text-blue-700 border border-blue-200",
+        !isActive && "hover:bg-slate-50",
         isPending && "opacity-50"
       )}
       onClick={handleClick}
       disabled={isPending}
     >
-      <item.icon className="h-4 w-4" />
-      <span className="flex-1 truncate">{item.name}</span>
+      <item.icon className={cn(
+        "h-5 w-5 flex-shrink-0",
+        isActive ? "text-blue-600" : "text-slate-500"
+      )} />
+      <span className="flex-1 truncate text-sm font-medium">{item.name}</span>
       {item.badge && (
-        <Badge variant="outline" className="ml-auto">
+        <Badge variant="outline" className="ml-auto text-xs">
           {item.badge}
         </Badge>
       )}
@@ -127,18 +134,24 @@ export function MobileSidebar({ className }: MobileSidebarProps) {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-80 p-0 h-full max-h-screen overflow-y-auto sm:max-w-sm">
-          <div className="flex items-center justify-between p-4 border-b">
-            <div>
-              <h2 className="font-semibold">Navigation</h2>
-              <p className="text-xs text-muted-foreground">Vision Empower Trust</p>
+        <DialogContent className="w-full max-w-sm p-0 h-full max-h-screen overflow-y-auto">
+          <DialogTitle className="sr-only">Main Navigation</DialogTitle>
+          <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">VE</span>
+              </div>
+              <div>
+                <h2 className="font-semibold text-slate-900">Navigation</h2>
+                <p className="text-xs text-slate-600">Vision Empower Trust</p>
+              </div>
             </div>
-            <Button variant="ghost" size="sm" onClick={handleClose}>
+            <Button variant="ghost" size="sm" onClick={handleClose} className="hover:bg-white/50">
               <X className="h-4 w-4" />
             </Button>
           </div>
           
-          <div className="p-4 space-y-1">
+          <div className="p-3 space-y-1 flex-1">
             {navigation.map((item) => (
               <MobileNavItem
                 key={item.href}
@@ -149,12 +162,15 @@ export function MobileSidebar({ className }: MobileSidebarProps) {
             ))}
           </div>
           
-          <div className="p-4 border-t mt-auto">
-            <div className="text-xs text-muted-foreground">
+          <div className="p-4 border-t bg-slate-50 mt-auto">
+            <div className="text-xs text-slate-600">
               {(user?.firstName || user?.lastName) && (
-                <div className="mb-1">Logged in as {user.firstName} {user.lastName}</div>
+                <div className="mb-1 font-medium">Logged in as {user.firstName} {user.lastName}</div>
               )}
-              <div>Role: {isAdmin ? 'Admin' : isRegionalManager ? 'Regional Manager' : 'User'}</div>
+              <div className="flex items-center justify-between">
+                <span>Role: {isAdmin ? 'Admin' : isRegionalManager ? 'Regional Manager' : 'User'}</span>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
             </div>
           </div>
         </DialogContent>

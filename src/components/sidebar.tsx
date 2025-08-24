@@ -28,6 +28,7 @@ const getNavigation = (isAdmin: boolean, isRegionalManager: boolean, assignedSta
     { name: "Overview", href: "/", icon: Home },
     { name: "Funders", href: "/funders", icon: Building2 },
     { name: "States", href: "/states", icon: MapPin },
+    { name: "Targets", href: "/targets", icon: Target },
     { name: "Pipeline", href: "/pipeline", icon: TrendingUp },
     { name: "Fiscal Years", href: "/fy", icon: Calendar },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
